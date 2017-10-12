@@ -1,4 +1,4 @@
-package com.inf.os.fileup;
+package com.example.app;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.example.app.R.layout.activity_main);
 
         if(Build.VERSION.SDK_INT >=23 && (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
         }
 
-        webView = (WebView) findViewById(R.id.ifView);
+        webView = (WebView) findViewById(com.example.app.R.id.ifView);
         assert webView != null;
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity{
             webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         webView.setWebViewClient(new Callback());
-        webView.loadUrl("https://infeeds.com/");
+        webView.loadUrl(getString(com.example.app.R.string.webview_url));
         webView.setWebChromeClient(new WebChromeClient(){
             //For Android 3.0+
             public void openFileChooser(ValueCallback<Uri> uploadMsg){

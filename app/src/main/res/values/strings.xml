@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FileUp</string>
+    <string name="app_name">Example App</string>
+    <string name="webview_url">https://www.google.com</string>
 </resources>
