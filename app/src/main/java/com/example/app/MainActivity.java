@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(com.example.app.R.layout.activity_main);
 
-        if(Build.VERSION.SDK_INT >=23 && (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
-        }
+
 
         webView = (WebView) findViewById(com.example.app.R.id.ifView);
         assert webView != null;
@@ -130,6 +128,13 @@ public class MainActivity extends AppCompatActivity{
             public boolean onShowFileChooser(
                     WebView webView, ValueCallback<Uri[]> filePathCallback,
                     WebChromeClient.FileChooserParams fileChooserParams){
+
+                //Request perms when the user preforms an action in the webview that requests access to camera and storage rather than onCreate()
+                if(Build.VERSION.SDK_INT >=23 && (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
+                }
+
+                //Code below should be executed in on onRequestPermissionsResult() instead.
                 if(mUMA != null){
                     mUMA.onReceiveValue(null);
                 }
@@ -168,6 +173,14 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             }
         });
+    }
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            String[] permissions,
+            int[] grantResults
+    ){
+        //Actually open the file chooser here.
     }
     public class Callback extends WebViewClient{
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl){
